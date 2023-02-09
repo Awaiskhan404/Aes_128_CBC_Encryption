@@ -1,13 +1,15 @@
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import javax.crypto.Cipher;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Base64;
 import java.util.Arrays;
 
 public class AesKeyFinder {
-    public static byte[] findKey(String plainTextFile, String cipherTextFile, String ivFile) throws Exception {
+    public static void findKey(String plainTextFile, String cipherTextFile, String ivFile, String keyFile) throws Exception {
         byte[] plaintext = readBytesFromFile(plainTextFile);
         byte[] ciphertext = readBytesFromFile(cipherTextFile);
         byte[] iv = readBytesFromFile(ivFile);
@@ -27,7 +29,7 @@ public class AesKeyFinder {
             key[i] = (byte)(block1[i] ^ decryptedBlock2[i]);
         }
 
-        return key;
+        writeKeyToFile(keyFile, key);
     }
 
     private static byte[] readBytesFromFile(String fileName) throws Exception {
@@ -36,7 +38,16 @@ public class AesKeyFinder {
         reader.close();
         return Base64.getDecoder().decode(base64Encoded);
     }
+
+    private static void writeKeyToFile(String fileName, byte[] key) throws Exception {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+        writer.write("-----BEGIN AES 128-BIT KEY-----\n");
+        writer.write(Base64.getEncoder().encodeToString(key));
+        writer.write("\n-----END AES 128-BIT KEY-----");
+        writer.close();
+    }
 }
+
 
 
 /*
