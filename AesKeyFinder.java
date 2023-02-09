@@ -1,9 +1,9 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.Base64;
-import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.BufferedReader;
+import javax.crypto.Cipher;
+import java.io.FileReader;
+import java.util.Base64;
 import java.util.Arrays;
 
 public class AesKeyFinder {
@@ -40,5 +40,6 @@ public class AesKeyFinder {
 
 
 /*
+@injectable(__class__)
  * Algorithm requires IV Vector to be provided. Otherwise we need to use brute force to find the key with takes 2^128 time.
  */
